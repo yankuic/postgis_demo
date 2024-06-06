@@ -1,0 +1,17 @@
+name: base
+channels:
+  - conda-forge
+dependencies:
+  - sqlalchemy
+  - psycopg2
+  - pandas
+  - geopandas
+  - matplotlib
+  - jupyter
+  - jupyterlab
+  - rasterio
+  - rio-cogeo
+  - numpy
+  - shapely
+  - pip:
+    - geoalchemy2

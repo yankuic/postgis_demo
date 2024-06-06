@@ -1,0 +1,30 @@
+# https://docs.divio.com/reference/docker-docker-compose/
+name: postgis
+services:
+  postgis:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgis
+    environment:
+      - POSTGRES_DB=gis
+      - POSTGRES_USER=gis
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432
+    volumes:
+      - ${POSTGIS_DB}:/var/lib/postgresql/data
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
+    command: "jupyter server --ip='*' --allow-root --notebook-dir=/home/root --ServerApp.password=${ACCESS_TOKEN} --ServerApp.open_browser=False --ServerApp.port=${PORT} --ServerApp.certfile=/home/root/.jupyter/mycert.pem --ServerApp.keyfile=/home/root/.jupyter/mykey.key"
+    environment:
+      - DATABASE_URL=postgres://postgres@postgis:5432/gis
+      - JUPYTER_ENABLE_LAB=yes
+    links:
+      - 'postgis'
+    ports:
+      - 8888:8888
+    volumes:
+      - ${LOCAL_WORKING_DIR}:/home/root/notebooks:rw
+      - ${LOCAL_DATASETS}:/home/root/data:rw

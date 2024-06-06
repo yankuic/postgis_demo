@@ -1,0 +1,7 @@
+.env
+data/*
+.ipynb_checkpoints
+.jupyter
+.Trash-0
+.vscode
+ssl-certs/*

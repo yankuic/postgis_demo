@@ -1,0 +1,21 @@
+FROM mambaorg/micromamba as mamba
+# Install postgis client side tools
+# RUN apt-get update 
+# RUN apt-get install -y \
+#     postgis
+
+# Setup mamba base environment
+COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yaml /tmp/environment.yaml
+RUN micromamba install -y -n base -f /tmp/environment.yaml && \
+    micromamba clean --all --yes
+
+# Setup jupyter server environment
+USER root
+RUN mkdir -p /home/root/.jupyter
+RUN chown -R $USER:$USER /home/root/.jupyter 
+RUN mkdir -p /home/root/notebooks
+RUN chown -R $USER:$USER /home/root/notebooks
+RUN mkdir -p /home/root/data
+RUN chown -R $USER:$USER /home/root/data
+COPY --chown=$USER:$USER ./ssl-certs/mycert.pem /home/root/.jupyter
+COPY --chown=$USER:$USER ./ssl-certs/mykey.key /home/root/.jupyter

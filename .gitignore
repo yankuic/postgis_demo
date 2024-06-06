@@ -1,7 +1,10 @@
 .env
-data/*
 .ipynb_checkpoints
 .jupyter
 .Trash-0
 .vscode
-ssl-certs/*
+data/postgis
+data/*.tif
+data/*.geojson
+ssl-certs/*.pem
+ssl-certs/*.key
